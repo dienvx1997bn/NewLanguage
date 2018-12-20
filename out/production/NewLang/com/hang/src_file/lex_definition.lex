@@ -1,34 +1,48 @@
 Letter
 {
-    a
-    b
-    c
-    d
-    e
-    f
-    g
-    h
+a
+b
+c
+d
+e
+f
+g
+h
 }
 Digit
 {
-    1
-    2
-    3
-    4
-    5
+1
+2
+3
+4
+5
 }
 Operator
 {
-    +
-    -
-    *
++
+-
+*
+/
 }
-Keyword
+Assignment
+{
+=
+}
+KeyWord
 {
 for
 if
 else
 while
 do
+int
 return
+}
+EndLine
+{
+;
+}
+Space
+{
+
 }

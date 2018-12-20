@@ -1,5 +1,7 @@
 package com.hang;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -7,9 +9,11 @@ import java.util.ArrayList;
 public class Lexer {
     private ArrayList<FormDefinition> frm ; //tap dinh nghia chinh quy
     private ArrayList<Token> tokens ;
+    private static final int ERROR = -1;
 
     public Lexer() {
         frm = new ArrayList<>();
+        tokens = new ArrayList<>();
     }
 
     public ArrayList<FormDefinition> readLex(String filename) { //doc file de lay dc dinh nghia chinh quy
@@ -21,8 +25,7 @@ public class Lexer {
             String line;
             while ((line = reader.readLine()) != null)
             {
-                line = line.replace('\t',' ');
-                line = line.trim();
+//                line = line.trim();
                 if(isNewDef == true && (line.equals("{") == false || line.equals("}") == false)) { //them dinh nghia chinh quy moi
                     FormDefinition token = new FormDefinition();    //tao moi 1 dinh nghia chinh quy
                     frm.add(token);                                 //them vao danh sach
@@ -61,30 +64,60 @@ public class Lexer {
     public ArrayList<Token> getTokens(String filename) {
         ArrayList<String> records = open_file(filename);
         StringBuilder tok = new StringBuilder();
+        StringBuilder undef = new StringBuilder();
+
         int sizeRecord = records.size();
         int count = 0;
         int n;
         int ret;
+        int old_Type;
 
         for (count=0; count < sizeRecord; count++) {    //đọc toàn bộ số dòng thu được
             char dataLine[] = records.get(count).toCharArray();
+            old_Type = -2;      //phần tử nhớ khởi tạo =-2, sau sẽ gán lại =ret mỗi lần add thêm tokens
             n = dataLine.length;
             int i;
             for(i=0; i<n; i++) {    //đọc từng phần tử mỗi dòng
                 tok.append(dataLine[i]);
                 if(i == n-1) {      //ending line
-
+                    if(isFrmDef(tok.toString()) == -1)  {
+                        undef.append(tok.toString());
+                    }
+                    if(undef.toString().isEmpty() == false) {
+                        System.out.println("SYNTAX ERROR LINE " + i);
+                        return null;
+                    }
                 }
-                ret = isFrmDef(tok.toString());
-                if (ret >=0 ) {
-                    tokens.add(new Token(frm.get(ret).getFrmDefData().getName(), tok.toString()));
+                else {
+                    ret = isFrmDef(tok.toString());
+                    if(ret >=0) {       //găp 1 định nghĩa chính quy mới
+                        if(undef.toString().isEmpty() == false) {   //kiểm tra undefine có dữ liệu hay không
+                            int result = isFrmDef(undef.toString());    //kiểm tra dữ liệu đó có là định nghĩa chính quy không
+                            if(result >=0) {
+                                tokens.add(new Token(frm.get(result).getFrmDefData().getName(), undef.toString()));
+                                undef.delete(0, undef.length());
+                            }
+                            else {
+                                System.out.println("SYNTAX ERROR LINE " + count);
+                                return null;
+                            }
+                        }
+                        else {
+                            tokens.add(new Token(frm.get(ret).getFrmDefData().getName(), tok.toString()));
+                            tok.delete(0, tok.length());
+                        }
+                    }
+                    else if(ret == ERROR) {         //nếu là lỗi
+                        undef.append(tok.toString());
+                        tok.delete(0, tok.length());
+
+                    }
                 }
                 //TODO: chưa xong đoạn này nhé
-
             }
         }
         //TODO: chú ý return chưa đúng
-        return null;
+        return tokens;
     }
 
     private int isFrmDef(String str) {
@@ -98,7 +131,7 @@ public class Lexer {
             }
         }
 
-        return -1;
+        return ERROR;
     }
 
 

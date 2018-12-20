@@ -1,5 +1,4 @@
-var yyy = "a";
-var ccc = (1+2)*3+(5-4*2);
-print "dien123";
-10;
-1+4;
+$a1 = 5;
+print $a1 + $a1 + 1 * $a1;
+print 1 + 2;
+3 + 4 * 5;

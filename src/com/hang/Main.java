@@ -23,8 +23,9 @@ public class Main {
 
         main.showTokens(tokens);
         System.out.println("------------");
-        parser.parse(tokens);
-
+//        parser.parse(tokens);
+//        boolean result = parser.syntax(tokens);
+//        System.out.println(result);
     }
 
     public ArrayList<String> open_file(String filename) {

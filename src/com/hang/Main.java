@@ -16,7 +16,6 @@ public class Main {
 
         Main main = new Main();
         Lexer lexer = new Lexer();
-        Parser parser = new Parser();
 
         records = main.open_file(filename);
         tokens = lexer.Lex(records);

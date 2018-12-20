@@ -9,6 +9,9 @@ public class FormDefinition {
         defData = new Definition();
     }
 
+    /**
+     * Hiển thị danh sách định nghĩa chính quy và các phần tử của nó
+     */
     public void showFrmDefData() {
         int n = defData.size();
         System.out.println("Name:  " + defData.getName());

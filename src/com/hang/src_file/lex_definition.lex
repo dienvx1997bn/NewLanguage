@@ -1,4 +1,3 @@
-<<** day la dong comment
 Letter
 {
     a
@@ -23,4 +22,17 @@ Operator
     +
     -
     *
+}
+KeyƯord
+{
+    for
+    if
+    else
+    while
+    do
+return
+}
+EndLine
+{
+    ;
 }

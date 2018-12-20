@@ -1,4 +1,3 @@
-<<** day la dong comment
 Letter
 {
     a
@@ -23,4 +22,13 @@ Operator
     +
     -
     *
+}
+Keyword
+{
+for
+if
+else
+while
+do
+return
 }
